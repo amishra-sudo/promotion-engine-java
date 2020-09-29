@@ -1,7 +1,9 @@
 package com.promotion.engine.service;
 
 import com.promotion.engine.PromotionEngineApplicationTests;
+import com.promotion.engine.domain.PromotionModel;
 import com.promotion.engine.domain.SKUModel;
+import com.promotion.engine.util.PromotionalMethodEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,19 @@ public class TestPromotionCalculator {
     @Autowired
     SKUModel skuModel;
 
+    @Autowired
+    PromotionModel promotionModel;
+
+    @Autowired
+    PromotionEngineApplicationContext context;
+
     @Test
     public void testScenarioA() {
         SKUModel skuA = new SKUModel(1, "A");
         SKUModel skuB = new SKUModel(1, "B");
         SKUModel skuC = new SKUModel(1, "C");
-
-
+        
+        context.setPrMethod(PromotionalMethodEnum.DIRECT);
 
     }
 }

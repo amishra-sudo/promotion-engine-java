@@ -1,6 +1,7 @@
 package com.promotion.engine.domain;
 
 
+import com.promotion.engine.util.PromotionalMethodEnum;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +19,12 @@ public class SKUModel {
     private Integer bPrice;
     private Integer cPrice;
     private Integer dPrice;
+    private Integer itemCount;
+    private String itemCode;
 
-    public SKUModel(int numberOfItems,String itemCode){
-
-        
-
+    public SKUModel(int numberOfItems, String itemCode) {
+        this.itemCount = numberOfItems;
+        this.itemCode = itemCode;
     }
 
     public String getaName() {
@@ -87,6 +89,22 @@ public class SKUModel {
 
     public void setdPrice(Integer dPrice) {
         this.dPrice = dPrice;
+    }
+
+    public Integer getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(Integer itemCount) {
+        this.itemCount = itemCount;
+    }
+
+    public String getItemCode() {
+        return itemCode;
+    }
+
+    public void setItemCode(String itemCode) {
+        this.itemCode = itemCode;
     }
 
     @Override
