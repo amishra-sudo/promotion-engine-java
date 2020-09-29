@@ -1,14 +1,9 @@
 package com.promotion.engine.service;
 
-import com.promotion.engine.domain.SKUModel;
-import com.promotion.engine.service.PromotionEngineApplicationContext;
-import com.promotion.engine.service.SKUPricing;
 import com.promotion.engine.util.PromotionalMethodEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -36,30 +31,29 @@ public class PromotionCalculatorService {
                 String itemCode = entry.getKey();
                 Integer itemCount = entry.getValue();
                 if (itemCode.equalsIgnoreCase("A")) {
-                    Integer pricePerItem = skuPricing.getPriceForItem(itemCode);
-                    Integer remainingItems = itemCount % context.getMultiplicationValueForA();
-                    Integer itemCoupling = itemCount / context.getMultiplicationValueForA();
-                    if (remainingItems >= 0) {
-                        totalPriceCalcuated = totalPriceCalcuated + itemCoupling * (context.getCouplingValueForA()) + remainingItems * pricePerItem;
-                    } else {
-                        totalPriceCalcuated = totalPriceCalcuated + pricePerItem * itemCount;
-                    }
+                    totalPriceCalcuated = getCalculatedValueForItems(totalPriceCalcuated, itemCode,
+                            itemCount, context.getMultiplicationValueForA(), context.getCouplingValueForA());
                 } else if (itemCode.equalsIgnoreCase("B")) {
-                    Integer pricePerItem = skuPricing.getPriceForItem(itemCode);
-                    Integer remainingItems = itemCount % context.getMultiplicationValueForB();
-                    Integer itemCoupling = itemCount / context.getMultiplicationValueForB();
-                    if (remainingItems >= 0) {
-                        totalPriceCalcuated = totalPriceCalcuated + itemCoupling * (context.getCouplingValueForB()) + remainingItems * pricePerItem;
-                    } else {
-                        totalPriceCalcuated = totalPriceCalcuated + pricePerItem * itemCount;
-                    }
+                    totalPriceCalcuated = getCalculatedValueForItems(totalPriceCalcuated, itemCode,
+                            itemCount, context.getMultiplicationValueForB(), context.getCouplingValueForB());
                 } else if (!concurrentOfferApplied && (itemCode.equalsIgnoreCase("C") || skuMap.containsKey("D"))) {
                     Integer pricePerItem = skuPricing.getPriceForItem(itemCode);
                     totalPriceCalcuated = totalPriceCalcuated + pricePerItem * itemCount;
-
                 }
-
             }
+        }
+        return totalPriceCalcuated;
+    }
+
+    private Integer getCalculatedValueForItems(Integer totalPriceCalcuated, String itemCode, Integer itemCount,
+                                               Integer multiValue, Integer couplingVal) {
+        Integer pricePerItem = skuPricing.getPriceForItem(itemCode);
+        Integer remainingItems = itemCount % multiValue;
+        Integer itemCoupling = itemCount / multiValue;
+        if (remainingItems >= 0) {
+            totalPriceCalcuated = totalPriceCalcuated + itemCoupling * (couplingVal) + remainingItems * pricePerItem;
+        } else {
+            totalPriceCalcuated = totalPriceCalcuated + pricePerItem * itemCount;
         }
         return totalPriceCalcuated;
     }
