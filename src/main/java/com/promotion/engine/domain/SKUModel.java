@@ -19,6 +19,12 @@ public class SKUModel {
     private Integer cPrice;
     private Integer dPrice;
 
+    public SKUModel(int numberOfItems,String itemCode){
+
+        
+
+    }
+
     public String getaName() {
         return aName;
     }
