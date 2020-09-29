@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.stream.Stream;
+
 @Service
 public class PromotionCalculator {
 
@@ -18,28 +23,51 @@ public class PromotionCalculator {
     @Autowired
     SKUPricing skuPricing;
 
-    public Integer createPromotion(SKUModel sku) {
-        Integer itemPriceCalculated = new Integer(0);
+    public Integer createPromotion(HashMap<String,Integer> skuMap) {
+        Integer totalPriceCalcuated = new Integer(0);
         if (context.getPrMethod().equals(PromotionalMethodEnum.DIRECT)) {
+            Iterator<Map.Entry<String, Integer>> iterator = skuMap.entrySet().iterator();
 
-            String itemCode = sku.getItemCode();
-            Integer itemCount = sku.getItemCount();
-            if (itemCode.equalsIgnoreCase("A") && itemCount >= 3) {
-                Integer pricePerItem = skuPricing.getPriceForItem(itemCode);
-                Integer remainingItems = itemCount - 3;
-                if (remainingItems > 0) {
+            while (iterator.hasNext()) {
+                Map.Entry<String, Integer> entry = iterator.next();
+                String itemCode = entry.getKey();
+                Integer itemCount = entry.getValue();
+                if (itemCode.equalsIgnoreCase("A") && itemCount >= 3) {
+                    Integer pricePerItem = skuPricing.getPriceForItem(entry.getKey());
+                    Integer remainingItems = itemCount % 3;
+                    Integer itemCoupling = itemCount / 3;
 
-                    itemPriceCalculated = 130 + remainingItems * pricePerItem;
-                } else {
-                    itemPriceCalculated = pricePerItem * itemCount;
+                    if (remainingItems > 0) {
+
+                        totalPriceCalcuated = itemCoupling * (130) + remainingItems * pricePerItem;
+                    } else {
+                        totalPriceCalcuated = pricePerItem * itemCount;
+
+                    }
+
+
+                } else if (itemCode.equalsIgnoreCase("B") && itemCount >= 2) {
+                    Integer pricePerItem = skuPricing.getPriceForItem(entry.getKey());
+                    Integer remainingItems = itemCount - 2;
+                    Integer itemCoupling = itemCount / 3;
+                    if (remainingItems > 0) {
+
+                        totalPriceCalcuated = itemCoupling * (45) + remainingItems * pricePerItem;
+                    } else {
+                        totalPriceCalcuated = pricePerItem * itemCount;
+
+                    }
+
+
+                } else if (itemCode.equalsIgnoreCase("C") || itemCode.equalsIgnoreCase("D")) {
+
+
 
                 }
 
-
             }
-
         }
-        return itemPriceCalculated;
+        return totalPriceCalcuated;
     }
 
 }

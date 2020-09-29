@@ -12,6 +12,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @ContextConfiguration(classes = {PromotionEngineApplicationTests.class})
@@ -28,10 +31,11 @@ public class TestPromotionCalculator {
 
     @Test
     public void testScenarioA() {
-        SKUModel skuA = new SKUModel(1, "A");
-        SKUModel skuB = new SKUModel(1, "B");
-        SKUModel skuC = new SKUModel(1, "C");
-        
+        Map<String,Integer> mapOfSKUs = new HashMap<>();
+        mapOfSKUs.put("A",1);
+        mapOfSKUs.put("B",1);
+        mapOfSKUs.put("C",1);
+        mapOfSKUs.put("D",1);
         context.setPrMethod(PromotionalMethodEnum.DIRECT);
 
     }
