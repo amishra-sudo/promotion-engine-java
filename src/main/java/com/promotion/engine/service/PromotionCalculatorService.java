@@ -1,5 +1,6 @@
 package com.promotion.engine.service;
 
+import com.promotion.engine.constants.ProductConstants;
 import com.promotion.engine.util.PromotionalMethodEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class PromotionCalculatorService {
         Integer totalPriceCalcuated = new Integer(0);
         boolean concurrentOfferApplied = false;
         if (context.getPrMethod().equals(PromotionalMethodEnum.DIRECT)) {
-            if (skuMap.containsKey("C") && skuMap.containsKey("D")) {
+            if (skuMap.containsKey(ProductConstants.PRODUCT_C) && skuMap.containsKey(ProductConstants.PRODUCT_D)) {
                 totalPriceCalcuated = totalPriceCalcuated + context.getConcurrentValue();
                 concurrentOfferApplied = true;
             }
@@ -30,13 +31,14 @@ public class PromotionCalculatorService {
                 Map.Entry<String, Integer> entry = iterator.next();
                 String itemCode = entry.getKey();
                 Integer itemCount = entry.getValue();
-                if (itemCode.equalsIgnoreCase("A")) {
+                if (itemCode.equalsIgnoreCase(ProductConstants.PRODUCT_A)) {
                     totalPriceCalcuated = getCalculatedValueForItems(totalPriceCalcuated, itemCode,
                             itemCount, context.getMultiplicationValueForA(), context.getCouplingValueForA());
-                } else if (itemCode.equalsIgnoreCase("B")) {
+                } else if (itemCode.equalsIgnoreCase(ProductConstants.PRODUCT_B)) {
                     totalPriceCalcuated = getCalculatedValueForItems(totalPriceCalcuated, itemCode,
                             itemCount, context.getMultiplicationValueForB(), context.getCouplingValueForB());
-                } else if (!concurrentOfferApplied && (itemCode.equalsIgnoreCase("C") || skuMap.containsKey("D"))) {
+                } else if (!concurrentOfferApplied && (itemCode.equalsIgnoreCase(ProductConstants.PRODUCT_C) ||
+                        skuMap.containsKey(ProductConstants.PRODUCT_D))) {
                     Integer pricePerItem = skuPricing.getPriceForItem(itemCode);
                     totalPriceCalcuated = totalPriceCalcuated + pricePerItem * itemCount;
                 }

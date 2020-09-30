@@ -1,6 +1,7 @@
 package com.promotion.engine.service;
 
 import com.promotion.engine.PromotionEngineApplicationTests;
+import com.promotion.engine.constants.ProductConstants;
 import com.promotion.engine.domain.SKUModel;
 import com.promotion.engine.util.PromotionalMethodEnum;
 import org.junit.Assert;
@@ -32,9 +33,9 @@ public class TestPromotionCalculatorService {
     @Test
     public void testScenarioA() {
         Map<String, Integer> mapOfSKUs = new HashMap<>();
-        mapOfSKUs.put("A", 1);
-        mapOfSKUs.put("B", 1);
-        mapOfSKUs.put("C", 1);
+        mapOfSKUs.put(ProductConstants.PRODUCT_A, 1);
+        mapOfSKUs.put(ProductConstants.PRODUCT_B, 1);
+        mapOfSKUs.put(ProductConstants.PRODUCT_C, 1);
         context.setPrMethod(PromotionalMethodEnum.DIRECT);
         Integer totalValueCalculated = promotionCalculatorService.calculateTotalPrice(mapOfSKUs);
         Assert.assertEquals(String.valueOf(totalValueCalculated), "100");
@@ -43,9 +44,9 @@ public class TestPromotionCalculatorService {
     @Test
     public void testScenarioB() {
         Map<String, Integer> mapOfSKUs = new HashMap<>();
-        mapOfSKUs.put("A", 5);
-        mapOfSKUs.put("B", 5);
-        mapOfSKUs.put("C", 1);
+        mapOfSKUs.put(ProductConstants.PRODUCT_A, 5);
+        mapOfSKUs.put(ProductConstants.PRODUCT_B, 5);
+        mapOfSKUs.put(ProductConstants.PRODUCT_C, 1);
         context.setPrMethod(PromotionalMethodEnum.DIRECT);
         Integer totalValueCalculated = promotionCalculatorService.calculateTotalPrice(mapOfSKUs);
         Assert.assertEquals(String.valueOf(totalValueCalculated), "370");
@@ -55,10 +56,10 @@ public class TestPromotionCalculatorService {
     @Test
     public void testScenarioC() {
         Map<String, Integer> mapOfSKUs = new HashMap<>();
-        mapOfSKUs.put("A", 3);
-        mapOfSKUs.put("B", 5);
-        mapOfSKUs.put("C", 1);
-        mapOfSKUs.put("D", 1);
+        mapOfSKUs.put(ProductConstants.PRODUCT_A, 3);
+        mapOfSKUs.put(ProductConstants.PRODUCT_B, 5);
+        mapOfSKUs.put(ProductConstants.PRODUCT_C, 1);
+        mapOfSKUs.put(ProductConstants.PRODUCT_D, 1);
         context.setPrMethod(PromotionalMethodEnum.DIRECT);
         Integer totalValueCalculated = promotionCalculatorService.calculateTotalPrice(mapOfSKUs);
         Assert.assertEquals(String.valueOf(totalValueCalculated), "280");
